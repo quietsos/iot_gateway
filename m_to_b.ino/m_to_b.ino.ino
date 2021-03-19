@@ -8,6 +8,12 @@ const char* mqttServer = "192.168.1.112";
 const int port = 1883;
 
 
+#define trigPin D3
+#define echoPin D4
+long duration;
+int distance;
+
+
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -47,12 +53,33 @@ void reconnect(){
 }
 void setup(){
   Serial.begin(9600);
+  pinMode(echoPin,INPUT);
+  pinMode(trigPin,OUTPUT);
+  
   setup_wifi();
   client.setServer(mqttServer,port);
 }
 
 
-
+int distanceMeasure(){
+  // Clears the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  
+  // Calculating the distance
+  distance= duration*0.034/2;
+  // Prints the distance on the Serial Monitor
+//  Serial.print("Distance: ");
+//  Serial.println(distance);
+  return distance;
+  
+}
 
 
 
@@ -63,8 +90,8 @@ void loop(){
   }
   client.loop();
 
-//  int val = distanceMeasure();
-  client.publish("distance","This is distance");
+ int  val = distanceMeasure();
+  client.publish("distance",String(val).c_str());
   delay(2000);
 
   
