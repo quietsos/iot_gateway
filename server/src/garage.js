@@ -1,5 +1,5 @@
 const mqtt = require('mqtt');
-const client = mqtt.connect("mqtt://192.168.1.112");
+const client = mqtt.connect("mqtt://192.168.0.104");
 
 
 var state = 'closed';
