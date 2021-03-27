@@ -39,3 +39,38 @@ function handleGarageState(message){
 }
 
 
+
+function openGarageDoor(){
+    if(connected && garageState != 'open'){
+        client.publish('garage/open','false');
+    }
+}
+
+
+function closeGarageDoor(){
+
+    if(connected && garageState !='closed'){
+        client.publish('garage/close','true');
+    }
+
+
+}
+
+
+//Simulate opening garage door
+
+setTimeout(()=>{
+    console.log("open door");
+    openGarageDoor();
+}, 2000)
+
+
+//simulate closing garage door
+
+setTimeout(()=>{
+    console.log("close door");
+    closeGarageDoor();
+
+}, 2000)
+
+

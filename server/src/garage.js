@@ -24,7 +24,59 @@ function sendStateUpdate(){
 }
 
 
-client.on('connect', (topic,message) =>{
-    console.log('receive message %s %s', topic,message);
+client.on('message', (topic,message) =>{
+    console.log('receive message: %s, %s', topic,message);
     
+    switch(topic){
+        case 'garage/open':
+            return handleOpenRequest(message);
+        case 'garage/close':
+            return handleCloseRequest(message);
+    }
+
 })
+
+
+function handleOpenRequest(message){
+
+    if(state != 'open' && state != 'opening'){
+        console.log("Opening garage door");
+        state= 'opening';
+        sendStateUpdate();
+
+
+        // simulate door open after 2 seconds 
+
+        setTimeout(()=>{
+            state= 'open';
+            sendStateUpdate();
+        },2000)
+    }
+}
+
+
+
+
+function handleCloseRequest(message){
+    if(state != 'closed' && state!= "closing"){
+        state= 'closing';
+        sendStateUpdate();
+
+        //simulate door closed after 5 seconds
+
+        setTimeout(()=>{
+            state = 'closed';
+            sendStateUpdate();
+        },2000)
+    }
+}
+
+
+
+
+
+
+
+
+
+
