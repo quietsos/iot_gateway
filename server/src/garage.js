@@ -73,8 +73,35 @@ function handleCloseRequest(message){
 
 
 
+// for nofifying controller that garage is disconnected before shutting down
 
 
+function handleAppExit(options,err){
+    if(err){
+        console.log(err.stack);
+    }
+
+    if(options.cleanup){
+        client.publish('garage/connected','false');
+    }
+
+    if(options.exit){
+        process.exit();
+    }
+}
+
+
+process.on('exit', handleAppExit.bind(null,{
+    cleanup:true
+}))
+
+process.on('SIGINT', handleAppExit.bind(null,{
+    exit:true
+}))
+
+process.on('uncaughtException',handleAppExit.bind(null,{
+    exit:true
+}))
 
 
 
