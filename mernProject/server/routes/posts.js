@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {getPosts} from '../controller/posts.js'
+import {getPosts,createPost} from '../controller/posts.js'
 const router = express.Router();
 
 //https://localhsot:5000/posts
@@ -13,5 +13,6 @@ const router = express.Router();
 // });
 
 router.get('/', getPosts);
+router.get('/',createPost);
 
 export default router;
