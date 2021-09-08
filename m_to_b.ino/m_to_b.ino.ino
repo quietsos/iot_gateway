@@ -4,8 +4,10 @@
 
 const char* ssid = "Innovation Lab";
 const char* password = "be_innovative_#";
-const char* mqttServer = "192.168.1.112";
+const char* mqttServer = "192.168.0.105";
 const int port = 1883;
+const char* mqttUser = "rango";
+const char* mqttPassword = "rangoisback";
 
 
 #define trigPin D3
@@ -75,8 +77,8 @@ int distanceMeasure(){
   // Calculating the distance
   distance= duration*0.034/2;
   // Prints the distance on the Serial Monitor
-//  Serial.print("Distance: ");
-//  Serial.println(distance);
+  Serial.print("Distance: ");
+  Serial.println(distance);
   return distance;
   
 }
@@ -90,9 +92,17 @@ void loop(){
   }
   client.loop();
 
- int  val = distanceMeasure();
+  int  val = distanceMeasure();
   client.publish("distance",String(val).c_str());
   delay(2000);
+
+  if(client.connect("light")){
+    Serial.print("Connected to subscribe");
+    
+  }
+
+  
+  
 
   
 }
